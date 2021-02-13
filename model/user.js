@@ -24,18 +24,18 @@ const userScheme = new Schema({
     },
     firstName: {
         type: String,
-        require: true,
+        required: true,
     },
     lastName: {
         type: String,
-        require: true,
+        required: true,
     },
     dob:{
         type: Date
     },
     gender:{
         type: String,
-        require: true,
+        required: true,
         min: 1,
         max: 1
     }
