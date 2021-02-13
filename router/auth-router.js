@@ -1,5 +1,6 @@
 const router = require('express').Router();
 const User = require('../model/user');
+const bcrypt = require('bcrypt');
 
 router.get("/", async (req, res) => {
     const users = await User.find();
@@ -15,9 +16,12 @@ router.post('/register', async (req, res) => {
     const existUser = await User.findOne({email});
 
     if(existUser) return res.status(400).json("This email already exist!");
+    const salt = await bcrypt.genSalt(10);
+    const hashedPassword = await bcrypt.hash(password, salt);
+
     const newUser = new User({
         email: email,
-        password: password,
+        password: hashedPassword,
         firstName: firstName,
         lastName: lastName,
         gender: gender,
