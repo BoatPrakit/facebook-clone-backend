@@ -33,8 +33,8 @@ router.post('/register', async (req, res) => {
     })
     try{
         await newUser.save();
-        const token = jwt.sign({_id: user._id}, process.env.SECRET_TOKEN);
-        res.header('auth-token', token).send(token);
+        const token = jwt.sign({_id: newUser._id}, process.env.SECRET_TOKEN);
+        res.cookie('auth-token',token,{httpOnly: true}).sendStatus(200);
     }catch(err){
         res.status(400).send(err);
     }
@@ -48,7 +48,11 @@ router.post('/login', async (req,res) => {
     if(!user) return res.status(400).send('Invalid Email');
     const isValidPassword = await bcrypt.compare(password, user.password);
     if(!isValidPassword) return res.status(400).send('Invalid Password');
-    const token = jwt.sign({_id: user._id}, process.env.SECRET_TOKEN);
-    res.header('auth-token', token).send(token);
+    if(!req.cookies['auth-token']){
+        const token = jwt.sign({_id: user._id}, process.env.SECRET_TOKEN);
+        res.cookie('auth-token',token,{httpOnly: true}).sendStatus(200);
+    }else{
+        res.sendStatus(200)
+    }
 })
 module.exports = router;

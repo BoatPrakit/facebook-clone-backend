@@ -14,9 +14,6 @@ const userScheme = new Schema({
         min: 8,
         max: 1024
     },
-    friends: {
-        type: [],
-    },
     registerOn: {
         type: Date,
         default: Date.now,
