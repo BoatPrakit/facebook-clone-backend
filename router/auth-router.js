@@ -16,9 +16,9 @@ router.post('/register', async (req, res) => {
     const dob = req.body.dob;
     const existUser = await User.findOne({email});
 
-    if(existUser) return res.status(400).json("This email already exist!");
-    if(password.length < 8) return res.send('Your password must more than 8 length');
-    if(email.length < 8) return res.send('Your email must more than 8 length');
+    if(existUser) return res.status(400).send("This email already exist!");
+    if(password.length < 8) return res.status(400).send('Your password must more than 8 length');
+    if(email.length < 8) return res.status(400).send('Your email must more than 8 length');
     if(!firstName || !lastName || !gender) return res.send('Please insert your name or lastname or gender');
     const salt = await bcrypt.genSalt(10);
     const hashedPassword = await bcrypt.hash(password, salt);
@@ -43,16 +43,11 @@ router.post('/register', async (req, res) => {
 router.post('/login', async (req,res) => {
     const email = req.body.email;
     const password = req.body.password;
-    if(password.length < 8) return res.send('Your password must more than 8 length');
     const user = await User.findOne({ email });
     if(!user) return res.status(400).send('Invalid Email');
     const isValidPassword = await bcrypt.compare(password, user.password);
     if(!isValidPassword) return res.status(400).send('Invalid Password');
-    if(!req.cookies['auth-token']){
         const token = jwt.sign({_id: user._id}, process.env.SECRET_TOKEN);
-        res.cookie('auth-token',token,{httpOnly: true}).sendStatus(200);
-    }else{
-        res.sendStatus(200)
-    }
+        res.cookie('auth-token',token,{httpOnly: true,}).sendStatus(200);
 })
 module.exports = router;
