@@ -47,7 +47,7 @@ router.post('/login', async (req,res) => {
     if(!user) return res.status(400).send('Invalid Email');
     const isValidPassword = await bcrypt.compare(password, user.password);
     if(!isValidPassword) return res.status(400).send('Invalid Password');
-        const token = jwt.sign({_id: user._id}, process.env.SECRET_TOKEN);
-        res.cookie('auth-token',token,{httpOnly: true,}).sendStatus(200);
+    const token = jwt.sign({_id: user._id}, process.env.SECRET_TOKEN);
+    res.cookie('auth-token',token,{httpOnly: true}).sendStatus(200);
 })
 module.exports = router;

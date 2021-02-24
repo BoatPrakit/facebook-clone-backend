@@ -6,7 +6,6 @@ const checkAuth = require('./middleware/checkAuth');
 const cookieParser = require('cookie-parser');
 const logger = require('./middleware/logger');
 const cors = require('cors');
-
 require('dotenv').config();
 mongoose.connect(process.env.DB_CONNECTION, { 
     useNewUrlParser: true, 
@@ -25,6 +24,9 @@ app.use(cors({
 app.use(logger);
 app.use(cookieParser());
 app.use(express.json());
+app.use('/checkAuth',checkAuth,(req,res) => {
+    res.sendStatus(200);
+})
 app.use('/api/user', accountRouter);
 app.listen(5000, () => {
     console.log("Server running on http://localhost:5000");
