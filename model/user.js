@@ -15,8 +15,8 @@ const userScheme = new Schema({
         max: 1024
     },
     registerOn: {
-        type: Date,
-        default: Date.now,
+        type: Number,
+        default: new Date().getTime(),
         required: true
     },
     firstName: {
@@ -28,7 +28,8 @@ const userScheme = new Schema({
         required: true,
     },
     dob:{
-        type: Date
+        type: Number,
+        required: true,
     },
     gender:{
         type: String,
