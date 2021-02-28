@@ -38,7 +38,7 @@ app.use('/checkAuth',checkAuth,(req,res) => {
     res.sendStatus(200);
 })
 app.use('/api/user', accountRouter);
-app.use('/api/relationship',relationRouter);
+app.use('/api/relationship',checkAuth,relationRouter);
 
 
 app.listen(5000, () => {

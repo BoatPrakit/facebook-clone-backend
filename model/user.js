@@ -27,15 +27,19 @@ const userScheme = new Schema({
         type: String,
         required: true,
     },
-    dob:{
+    dob: {
         type: Number,
         required: true,
     },
-    gender:{
+    gender: {
         type: String,
         required: true,
         min: 1,
         max: 1
+    },
+    image: {
+        type: String,
+        required: true
     }
 })
 
