@@ -14,27 +14,26 @@ router.post('/register', async (req, res) => {
     const lastName = req.body.lastName;
     const gender = req.body.gender;
     const dob = req.body.dob;
-    const existUser = await User.findOne({email});
-
-    if(existUser) return res.status(400).send("This email already exist!");
-    if(password.length < 8) return res.status(400).send('Your password must more than 8 length');
-    if(email.length < 8) return res.status(400).send('Your email must more than 8 length');
-    if(!firstName || !lastName || !gender) return res.send('Please insert your name or lastname or gender');
-    const salt = await bcrypt.genSalt(10);
-    const hashedPassword = await bcrypt.hash(password, salt);
-
-    const newUser = new User({
-        email: email,
-        password: hashedPassword,
-        firstName: firstName,
-        lastName: lastName,
-        gender: gender,
-        dob: dob
-    })
     try{
-        await newUser.save();
-        const token = jwt.sign({_id: newUser._id}, process.env.SECRET_TOKEN);
-        res.cookie('auth-token',token,{httpOnly: true}).sendStatus(200);
+        const existUser = await User.findOne({email});
+
+        if(existUser) return res.status(400).send("This email already exist!");
+        if(password.length < 8) return res.status(400).send('Your password must more than 8 length');
+        if(email.length < 8) return res.status(400).send('Your email must more than 8 length');
+        if(!firstName || !lastName || !gender) return res.send('Please insert your name or lastname or gender');
+        const salt = await bcrypt.genSalt(10);
+        const hashedPassword = await bcrypt.hash(password, salt);
+
+        const newUser = new User({
+            email: email,
+            password: hashedPassword,
+            firstName: firstName,
+            lastName: lastName,
+            gender: gender,
+            dob: dob
+        })
+            await newUser.save();
+            res.sendStatus(200)
     }catch(err){
         res.status(400).send(err);
     }

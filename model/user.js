@@ -37,10 +37,6 @@ const userScheme = new Schema({
         min: 1,
         max: 1
     },
-    image: {
-        type: String,
-        required: true
-    }
 })
 
 module.exports = mongoose.model('User', userScheme);
