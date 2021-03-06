@@ -2,10 +2,21 @@ const router = require('express').Router();
 const User = require('../model/user');
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
+const checkAuth = require('../middleware/checkAuth');
 
-router.get("/", async (req, res) => {
-    const users = await User.find();
-    res.json(users);
+router.get("/",checkAuth, async (req, res) => {
+    try{
+        await User.findOne({_id: res.locals.user})
+        .select('email firstName lastName dob gender registerOn').exec((err,user) => {
+            if(err) console.log(err);
+            res.json(user)
+        })
+    }catch(err){
+        res.sendStatus(400);
+    }
+})
+router.get("/logout",checkAuth, (req,res) => {
+    res.cookie('auth-token','',{maxAge: 0}).sendStatus(200)
 })
 router.post('/register', async (req, res) => {
     const email = req.body.email;
