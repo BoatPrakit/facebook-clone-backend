@@ -5,13 +5,34 @@ const postSchema = new Schema({
         required: true,
         type: String,
     },
-    comments: Array,
+    comments: [{
+        userId: {
+            type: Schema.Types.ObjectId,
+            ref: 'User' 
+        },
+        commentOn: {
+            type: Number,
+            default: new Date().getTime()
+        },
+        detail: {
+            type: String,
+        }
+    }],
     postOn: {
         type: Number,
         default: new Date().getTime(),
-        required: true
     },
-    likes: Number
+    likes: {
+        type: Number,
+        default: 0,
+    },
+    isEdited: {
+        type: Boolean,
+        default: false
+    },
+    editedOn: {
+        type: Number,
+    }
 })
 
 module.exports = mongoose.model('Post', postSchema)

@@ -14,5 +14,4 @@ const AllPostSchema = new Schema({
     }],
 })
 
-
 module.exports = mongoose.model('AllPost', AllPostSchema);

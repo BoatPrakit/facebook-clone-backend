@@ -77,6 +77,18 @@ router.get('/', async (req,res) => {
     //     res.json(user);
     // })
 })
+router.get('/friends', async (req,res) => {
+    try{
+        await RelationShip.findById(res.locals.user)
+        .select('friends')
+        .exec((err,friends) => {
+            if(err) throw new Error("No friends")
+            res.json(friends);
+        });
+    }catch(err){
+        res.sendStatus(200).send("No friends")
+    }
+})
 router.post('/create', async (req,res) => {
     const user = await User.findOne({email: "myemail@email.com"});
     const relation = new RelationShip({
