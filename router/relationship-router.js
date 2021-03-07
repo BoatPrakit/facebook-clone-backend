@@ -1,6 +1,6 @@
 const router = require('express').Router();
 const RelationShip = require('../model/Relationship');
-const User = require("../model/user");
+const User = require("../model/User");
 
 router.post('/pending/add',async (req,res) => {
     const ownerId = res.locals.user;
