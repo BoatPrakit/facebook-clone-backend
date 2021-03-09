@@ -6,7 +6,7 @@ router.get('/mypost', async (req,res) => {
     const ownerId = res.locals.user;
     try{
         await AllPost.findOne({postBy: ownerId})
-                        .select('allPost')
+                        .populate('allPost.postId',)
                         .exec((err,myPost) => {
                         res.json(myPost); 
                         })
