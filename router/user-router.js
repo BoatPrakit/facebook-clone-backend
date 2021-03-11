@@ -4,7 +4,8 @@ const User = require('../model/User');
 
 router.get('/', async (req,res) => {
     const firstName = req.query.firstName;
-    const lastName = req.query.lastName;
+    let lastName = req.query.lastName;
+    if(!lastName) lastName = '.'
     const regexFirstName = new RegExp(`^${firstName}(\w*)?`);
     const regexLastName = new RegExp(`^${lastName}(\w*)?`);
      await User.find({ 
