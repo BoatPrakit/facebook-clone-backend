@@ -13,6 +13,7 @@ const checkAuth = require('./middleware/checkAuth');
 const accountRouter = require('./router/auth-router');
 const relationRouter = require('./router/relationship-router');
 const postRouter = require('./router/post-router');
+const userRouter = require("./router/user-router")
 
 require('dotenv').config();
 mongoose.connect(process.env.DB_CONNECTION, { 
@@ -38,10 +39,10 @@ app.use(express.json());
 app.use('/checkAuth',checkAuth,(req,res) => {
     res.sendStatus(200);
 })
-app.use('/api/user', accountRouter);
-app.use('/api/relationship',checkAuth,relationRouter);
-app.use('/api/post',checkAuth,postRouter);
-
+app.use('/api/auth', accountRouter);
+app.use('/api/relationship', checkAuth, relationRouter);
+app.use('/api/post', checkAuth, postRouter);
+app.use('/api/user/', userRouter);
 app.listen(5000, () => {
     console.log("Server running on http://localhost:5000");
 })
