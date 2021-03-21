@@ -15,6 +15,7 @@ const relationRouter = require('./router/relationship-router');
 const postRouter = require('./router/post-router');
 const userRouter = require("./router/user-router")
 
+const port = process.env.PORT || 5000;
 require('dotenv').config();
 mongoose.connect(process.env.DB_CONNECTION, { 
     useNewUrlParser: true, 
@@ -31,7 +32,7 @@ mongoose.connect(process.env.DB_CONNECTION, {
 
 app.use(cors({
     credentials: true,
-    origin: 'http://localhost:3000'
+    origin: process.env.FRONTEND_ORIGIN
 }));
 app.use(logger);
 app.use(cookieParser());
@@ -42,7 +43,7 @@ app.use('/checkAuth',checkAuth,(req,res) => {
 app.use('/api/auth', accountRouter);
 app.use('/api/relationship', checkAuth, relationRouter);
 app.use('/api/post', checkAuth, postRouter);
-app.use('/api/user/', userRouter);
-app.listen(5000, () => {
-    console.log("Server running on http://localhost:5000");
+app.use('/api/user', userRouter);
+app.listen(port, () => {
+    console.log(`Server running on http://localhost/${port}`);
 })

@@ -22,10 +22,12 @@ const postSchema = new Schema({
         type: Number,
         default: new Date().getTime(),
     },
-    likes: {
-        type: Number,
-        default: 0,
-    },
+    likes: [{
+        userId: {
+            type: Schema.Types.ObjectId,
+            ref: 'User'
+        }
+    }],
     isEdited: {
         type: Boolean,
         default: false
